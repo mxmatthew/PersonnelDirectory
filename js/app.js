@@ -4,7 +4,7 @@ let departmentsList
 
 async function getAllContacts() {
  await $.ajax({
-        url: 'http//dev1.mattt.uk/projects/companydirectory/app/main.php',
+        url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
         type: 'POST',
         dataType: 'json',
         data: {crud: 'read', requestType: 'all_contacts' },
@@ -64,7 +64,7 @@ async function getContact(contactId) {
 
 async function updateContact(contactId) {
 $.ajax({
-        url: 'https://mattskills.co.uk/projects/companydirectory/app/main.php',
+        url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
         type: 'POST',
         dataType: 'json',
         data: {crud: 'update', requestType: 'contact', id: contactId, firstName: $('#firstNameInput').val(), lastName: $('#lastNameInput').val(), 
@@ -93,7 +93,7 @@ $.ajax({
 
 async function addContact() {
     $.ajax({
-            url: 'https://mattskills.co.uk/projects/companydirectory/app/main.php',
+            url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
             type: 'POST',
             dataType: 'json',
             data: {crud: 'create', requestType: 'contact', firstName: $('#firstNameInputNew').val(), lastName: $('#lastNameInputNew').val(), 
@@ -119,7 +119,7 @@ async function addContact() {
 
 async function deleteItem(itemType,itemId) {
  await $.ajax({
-        url: 'https://mattskills.co.uk/projects/companydirectory/app/main.php',
+        url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
         type: 'POST',
         dataType: 'json',
         data: {crud: 'delete', requestType: itemType, id: itemId },
