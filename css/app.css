@@ -1,0 +1,101 @@
+body,html {
+    background:#FFF;
+    font-family: 'Nunito', sans-serif;
+    font-weight:400;
+}
+h1 {
+    font-weight:700;
+}
+
+#editContactForm, #saveContactBtn {
+    display:none;
+}
+
+/* Header Styling */
+
+header {
+    position:fixed;
+    padding:15px;
+    background: rgb(0,7,200);
+    background: linear-gradient(340deg, rgba(0,7,200,1) 0%, rgba(0,255,205,1) 100%);
+    width:100%;
+}
+
+header h1 {
+    text-transform:uppercase;
+    font-size:1.3em;
+    color:#FFF;
+}
+
+.title {
+    float:left;
+}
+
+.controls {
+    float:right;
+    margin-bottom:10px;
+}
+
+.controls .btn {
+    padding:0px;
+    color:#FFF;
+}
+
+.hspacer {
+    height:100px;
+}
+
+/* Contacts List */
+
+#contactsList  {
+    list-style:none;
+    margin:0;padding:0;
+}
+
+#contactsList li {
+    padding-left:15px;padding-right:15px;
+}
+
+#contactsList li a {
+    display:block;
+    padding-top:15px;padding-bottom:15px;
+    border-bottom:1px solid #EFEFEF;
+    color:#000;
+    font-size:1.1em;
+    line-height:50px;
+    text-decoration:none;
+}
+
+.contactIcon {
+    display:block;
+    float:left;
+    width:50px;
+    height:50px;
+    text-align:center;
+    line-height:50px;
+    border-radius: 50%;
+    background: rgb(0,7,200);
+    color:#FFF;
+    margin-right:15px;
+
+}
+
+/* Modal Styling */
+
+.modal-dialog {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+.modal-content {
+    height: auto;
+    width:100%;
+    min-height: 100vh;
+    border-radius: 0;
+  }
+.modal-header {
+    border-radius: 0;
+}
+.modal-header h5 {font-weight:700; text-transform:uppercase;}
+ 
