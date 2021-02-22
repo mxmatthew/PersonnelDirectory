@@ -1,6 +1,7 @@
 
 let contactsList
 let departmentsList
+let locationsList
 
 async function getAllContacts() {
  await $.ajax({
@@ -11,6 +12,8 @@ async function getAllContacts() {
         success: contacts => {
             contactsList = contacts['contacts']
             departmentsList = contacts['departments']
+            locationsList = contacts['locations']
+            console.log(contacts);
             $('#contactsList').html(``)
             contactsList.forEach( (contact,index) => {
                 $('#contactsList').append(`
@@ -24,9 +27,42 @@ async function getAllContacts() {
             $('#departmentInputNew').append(`
             <option value="${department.id}">${department.name}</option>
             `)
+            $('#departmentsList').append(`
+            <li><a href="#" onClick="getDepartment(${department.id})" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" >${department.name}</a></li>
+               
+            `)
+            })
+            locationsList.forEach( (location,index) => {
+                $('#locationsInput').append(`
+                <option value="${location.id}">${location.name}</option>
+                `)
+                $('#locationsInputNew').append(`
+                <option value="${location.id}">${location.name}</option>
+                `)
+                $('#locationsList').append(`
+                <li><a href="#" onClick="getDepartment(${location.id})" data-bs-toggle="modal" data-bs-target="#editLocationModal" >${location.name}</a></li>
+                   
+                `)
             })
         }
     })
+}
+
+async function getDepartment(departmentId) {
+    let findDepartment
+    await Promise.resolve(
+        findDepartment  = departmentsList.filter(department => department.id == departmentId)
+    ).then(() => {
+        let department = findDepartment[0];
+        console.log(department);
+        $('#singleDepartmentNameInput').val(department.name)
+        $('#singleDepartmentName').html(`${department.name}`)
+        $('#locationsInput').append(`
+        <option selected="selected" value="${department.locationsID}">${department.locationName}</option>
+        `)
+        $('#updateBtn').attr('onclick',`updateDepartment(${department.id})`)
+    })
+
 }
 
 
@@ -46,7 +82,7 @@ async function getContact(contactId) {
         $('#lastNameInput').val(contact.lastName)
         $('#emailInput').val(contact.email)
         $('#jobTitleInput').val(contact.jobTitle)
-        $('#updateContactBtn').attr('onclick',`updateContact(${contact.id})`)
+        $('#updateBtn').attr('onclick',`updateContact(${contact.id})`)
         $('#deleteContactBtn').attr('onclick',`deleteItem('contact',${contact.id})`)
         $('#departmentInput').append(`
         <option selected="selected" value="${contact.departmentID}">${contact.department}</option>
@@ -84,11 +120,31 @@ $.ajax({
     })
     const refreshed = await getAllContacts();
     getContact(contactId)
-    $('#contactDetails').toggle()
-    $('#editContactForm').toggle()
-    $('#editContactBtn').toggle()
-    $('#saveContactBtn').toggle()
+
 }
+
+async function updateDepartment(departmentId) {
+    $.ajax({
+            url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {crud: 'update', requestType: 'department', id: departmentId, departmentName: $('#singleDepartmentNameInput').val(), locationID: $('#locationsInput').val() },
+            success: result => {
+               if (result['status']['code'] == 200) {
+                   $('#responseMessage').html('Department Saved')
+                $('.toast').toast('show');
+               } else {
+                   console.log(result)
+                $('#responseMessage').html('Something went wrong')
+                $('.toast').toast('show');
+               }
+              
+    
+            } 
+        })
+        const refreshed = await getAllContacts();
+        getDepartment(departmentId)
+    }
 
 
 async function addContact() {
