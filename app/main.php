@@ -105,7 +105,10 @@ if($read) {
     if ($requestType == 'contact') {
     $query = 'INSERT INTO personnel (firstName,lastName,email,departmentID,jobTitle) VALUES("' . $_POST['firstName'] . '","' . $_POST['lastName'] . '","' . $_POST['email'] . '",' . $_POST['departmentID'] . ',
     "' . $_POST['jobTitle'] . '")';
-    }
+    } elseif ($requestType == 'department') {
+		$query = 'INSERT INTO department (name,locationID) VALUES("' . $_POST['departmentName'] . '","' . $_POST['locationID'] . '")';
+	}
+
 	$result = $conn->query($query);
 	
 	if (!$result) {
@@ -139,7 +142,9 @@ if($read) {
         $query = 'UPDATE personnel SET firstName = "'. $_POST['firstName'].'", lastName = "'. $_POST['lastName'].'", email = "'. $_POST['email'].'",
         departmentID = "'. $_POST['departmentID'].'", jobTitle = "'. $_POST['jobTitle'].'" WHERE id =  ' . $_POST['id'];
     } elseif ($requestType == 'department') {
-        $query = 'UPDATE department SET name = "'. $_POST['departmentName'].'", locationID = "'. $_POST['locationID'].'" WHERE id =  ' . $_POST['id'];
+        $query = 'UPDATE department SET name = "'. $_POST['departmentName'].'", locationID = '. $_POST['locationID'].' WHERE id =  ' . $_POST['id'];
+    } elseif ($requestType == 'location') {
+        $query = 'UPDATE location SET name = "'. $_POST['locationName'].'" WHERE id =  ' . $_POST['id'];
     }
 
     $result = $conn->query($query);
@@ -174,7 +179,11 @@ if($read) {
 
     if ($requestType == 'contact') {
     $query = 'DELETE FROM personnel WHERE id = ' . $_POST['id'];
-    }
+    } elseif ($requestType == 'department') {
+	$query = 'DELETE FROM department WHERE id = ' . $_POST['id'];
+	} elseif ($requestType == 'location') {
+	$query = 'DELETE FROM location WHERE id = ' . $_POST['id'];
+	} 
 
 	$result = $conn->query($query);
 	

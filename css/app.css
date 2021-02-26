@@ -47,16 +47,16 @@ header h1 {
 
 /* Contacts List */
 
-#contactsList,#departmentsList  {
+#contactsList,#departmentsList,#locationsList  {
     list-style:none;
     margin:0;padding:0;
 }
 
-#contactsList li,#departmentsList li {
+#contactsList li,#departmentsList li, #locationsList li {
     padding-left:15px;padding-right:15px;
 }
 
-#contactsList li a,#departmentsList li a {
+#contactsList li a,#departmentsList li a, #locationsList li a {
     display:block;
     padding-top:15px;padding-bottom:15px;
     border-bottom:1px solid #EFEFEF;
@@ -100,3 +100,12 @@ header h1 {
 }
 .modal-header h5 {font-weight:700; text-transform:uppercase;}
  
+.toast-container {
+    z-index: 9999999;
+    width:100%;
+    }
+.toast {
+    width:100%;
+    border-radius:0;
+    height:90px;
+}

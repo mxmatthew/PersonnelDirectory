@@ -15,6 +15,8 @@ async function getAllContacts() {
             locationsList = contacts['locations']
             console.log(contacts);
             $('#contactsList').html(``)
+            $('#departmentsList').html(``)
+            $('#locationsList').html(``)
             contactsList.forEach( (contact,index) => {
                 $('#contactsList').append(`
                 <li><a href="#" onClick="getContact(${contact.id})" data-bs-toggle="modal" data-bs-target="#ContactModal" ><div class="contactIcon">${contact.firstName[0]}${contact.lastName[0]}</div> ${contact.lastName}, ${contact.firstName}</a></li>
@@ -40,7 +42,7 @@ async function getAllContacts() {
                 <option value="${location.id}">${location.name}</option>
                 `)
                 $('#locationsList').append(`
-                <li><a href="#" onClick="getDepartment(${location.id})" data-bs-toggle="modal" data-bs-target="#editLocationModal" >${location.name}</a></li>
+                <li><a href="#" onClick="getLocation(${location.id})" data-bs-toggle="modal" data-bs-target="#editLocationModal" >${location.name}</a></li>
                    
                 `)
             })
@@ -50,17 +52,57 @@ async function getAllContacts() {
 
 async function getDepartment(departmentId) {
     let findDepartment
+    let isDeletable
     await Promise.resolve(
-        findDepartment  = departmentsList.filter(department => department.id == departmentId)
+        findDepartment  = departmentsList.filter(department => department.id == departmentId),
+        isDeletable = contactsList.filter(contacts => contacts.departmentID == departmentId )
     ).then(() => {
         let department = findDepartment[0];
         console.log(department);
         $('#singleDepartmentNameInput').val(department.name)
         $('#singleDepartmentName').html(`${department.name}`)
+
         $('#locationsInput').append(`
-        <option selected="selected" value="${department.locationsID}">${department.locationName}</option>
+        <option selected="selected" value="${department.locationID}">${department.locationName}</option>
         `)
         $('#updateBtn').attr('onclick',`updateDepartment(${department.id})`)
+        $('#deleteBtn').attr('onclick',`deleteItem('department',${department.id})`)
+        if (isDeletable[0]) {
+            console.log("Cannot be deleted")
+            $('#deleteTitle').html(`Delete Department`)
+            $('#deleteMessage').html(`This department cannot be deleted because it has personnel attatched to it.`)
+            $('#deleteBtn').css('display','none')
+        } else {
+            $('#deleteTitle').html(`Are You Sure?`)
+            $('#deleteMessage').html(`This will permenantly delete this department from the company directory.`)
+        }
+    })
+
+}
+
+async function getLocation(locationId) {
+    let findLocation
+    let isDeletable
+    await Promise.resolve(
+        findLocation  = locationsList.filter(location => location.id == locationId),
+        isDeletable = departmentsList.filter(contacts => departments.locationID == locationId )
+    ).then(() => {
+        let location = findLocation[0];
+        console.log(location);
+        $('#singleLocationNameInput').val(location.name)
+        $('#singleLocationName').html(`${location.name}`)
+        $('#locationsInput').val(location.name)
+        $('#updateBtn').attr('onclick',`updateLocation(${location.id})`)
+        $('#deleteBtn').attr('onclick',`deleteItem('location',${location.id})`)
+        if (isDeletable) {
+            console.log("Cannot be deleted")
+            $('#deleteTitle').html(`Delete Location`)
+            $('#deleteMessage').html(`This location cannot be deleted because it has departments attatched to it.`)
+            $('#deleteBtn').css('display','none')
+        } else {
+            $('#deleteTitle').html(`Are You Sure?`)
+            $('#deleteMessage').html(`This will permenantly delete this location from the company directory.`)
+        }
     })
 
 }
@@ -68,8 +110,6 @@ async function getDepartment(departmentId) {
 
 async function getContact(contactId) {
     
-    $('#contacts').hide();
-    $('#contactSingle').show();
 
     let findContact 
     await Promise.resolve(
@@ -143,8 +183,31 @@ async function updateDepartment(departmentId) {
             } 
         })
         const refreshed = await getAllContacts();
-        getDepartment(departmentId)
-    }
+        
+}
+
+async function updateLocation(locationId) {
+    $.ajax({
+            url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {crud: 'update', requestType: 'location', id: locationId, locationName: $('#singleLocationNameInput').val() },
+            success: result => {
+               if (result['status']['code'] == 200) {
+                   $('#responseMessage').html('Location Saved')
+                $('.toast').toast('show');
+               } else {
+                   console.log(result)
+                $('#responseMessage').html('Something went wrong')
+                $('.toast').toast('show');
+               }
+              
+    
+            } 
+        })
+        const refreshed = await getAllContacts();
+        getLocation(locationId)
+}
 
 
 async function addContact() {
@@ -169,7 +232,31 @@ async function addContact() {
         })
         const refreshed = await getAllContacts();
 
-    }
+}
+
+async function addDepartment() {
+    $.ajax({
+            url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {crud: 'create', requestType: 'department', departmentName: $('#singleDepartmentNameInputNew').val(), locationID: $('#locationsInputNew').val()},
+            success: result => {
+               if (result['status']['code'] == 200) {
+                   $('#responseMessage').html('Department Saved')
+                $('.toast').toast('show');
+               } else {
+                   console.log(result)
+                $('#responseMessage').html('Something went wrong')
+                $('.toast').toast('show');
+               }
+              
+    
+            } 
+        })
+        const refreshed = await getAllContacts();
+        
+
+}
 
 
 
@@ -181,7 +268,7 @@ async function deleteItem(itemType,itemId) {
         data: {crud: 'delete', requestType: itemType, id: itemId },
         success: result => {
             if (result['status']['code'] == 200) {
-                $('#responseMessage').html('Contact Deleted')
+                $('#responseMessage').html('Succesfully Deleted')
              $('.toast').toast('show');
             } else {
                 console.log(result)
@@ -191,12 +278,7 @@ async function deleteItem(itemType,itemId) {
         }
 }).then(getAllContacts()).then(async ()=> {
     const refreshed = await getAllContacts();
-    showContacts()
-    $('#contactDetails').toggle()
-    $('#editContactForm').toggle()
-    $('#editContactBtn').toggle()
-    $('#contactSingleName').toggle()
-    $('#contactActionBar').toggle()
+
 })
 }
 

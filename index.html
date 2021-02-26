@@ -1,136 +1,118 @@
 <!DOCTYPE html >
 <html>
-    <head>
-        <title>Company Directory</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />	
-        <link href="dist/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;600;700&display=swap" rel="stylesheet">
-        <link href="css/app.css" rel="stylesheet" />
-    </head>
-    <body>
+  <head>
+    <title>Company Directory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />	
+    <link href="dist/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;600;700&display=swap" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet" />
+  </head>
+  <body>
        
-        <header>
-          <div class="title">
-            <h1>Personnel</h1>
-          </div>
-          <div class="controls">
-            <button type="button" class="btn btn-small" data-bs-toggle="modal" data-bs-target="#addContactModal">
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-            </button>
-            <div class="btn-group">
-              <button type="button" class="btn btn-small" data-bs-toggle="dropdown" aria-expanded="false" >
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#"  data-bs-toggle="modal" data-bs-target="#departmentsModal" >Departments</a></li>
-                <li><a class="dropdown-item" href="#">Locations</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Help</a></li>
-              </ul>
-            </div>
-          </div>
-         
-          
+    <header>
+    <div class="title">
+      <h1>Personnel</h1>
+    </div>
+    <div class="controls">
+      <button type="button" class="btn btn-small" data-bs-toggle="modal" data-bs-target="#addContactModal">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+      </button>
+      <div class="btn-group">
+        <button type="button" class="btn btn-small" data-bs-toggle="dropdown" aria-expanded="false" >
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#"  data-bs-toggle="modal" data-bs-target="#departmentsModal" >Departments</a></li>
+          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#locationsModal" >Locations</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Help</a></li>
+        </ul>
+      </div>
+    </div>
+    <input type="email" class="form-control rounded-pill" id="exampleFormControlInput1" placeholder="Search">
+    </header>
 
-          <input type="email" class="form-control rounded-pill" id="exampleFormControlInput1" placeholder="Search">
+    <div class="hspacer"></div>
 
-        
+    
+    <section>
+      <ul id="contactsList">
+      </ul>
+    </section>
 
-        </header>
-        <div class="hspacer"></div>
-        <section>
-          <ul id="contactsList">
-
-          </ul>
-
-        </section>
-
-        <section id="contactSingle">
-          <div class="modal fade" id="ContactModal" tabindex="-1"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
+    <section id="contactSingle">
+      <div class="modal fade" id="ContactModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="btn btn-small" data-bs-dismiss="modal" aria-label="Close">
                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                </button>
+              </button>
               <h5 class="modal-title"  id="contactSingleName" ></h5>
-              
               <div class="btn-group">
                 <button type="button" class="btn btn-small" data-bs-toggle="dropdown" aria-expanded="false">
                   <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="#"  data-bs-toggle="modal" data-bs-target="#deleteContactModal" >Delete</a></li>
+                  <li><a class="dropdown-item" href="#"  data-bs-toggle="modal" data-bs-dismiss="modal" data-bs-target="#deleteContactModal" >Delete</a></li>
                 </ul>
-              </div>
+            </div>
             </div>
             <div class="modal-body">
-              
               <div id="contactDetails">
-                
               </div>
 
-              <div  id="editContactForm">
+              <div id="editContactForm">
                 <form>
                 <div class="mb-3 row">
-                    <label for="firstNameInput" class="col-sm-2 col-form-label">First Name</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control contactInput" id="firstNameInput" value="">
-                    </div>
+                  <label for="firstNameInput" class="col-sm-4 col-form-label">First Name</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control contactInput" id="firstNameInput" value="">
                   </div>
-                  <div class="mb-3 row">
-                    <label for="lastNameInput" class="col-sm-2 col-form-label">Last Name</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control contactInput" id="lastNameInput" value="">
-                    </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="lastNameInput" class="col-sm-4 col-form-label">Last Name</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control contactInput" id="lastNameInput" value="">
                   </div>
-                  <div class="mb-3 row">
-                    <label for="emailInput" class="col-sm-2 col-form-label">Email Address</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control contactInput" id="emailInput" value="">
-                    </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="emailInput" class="col-sm-4 col-form-label">Email Address</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control contactInput" id="emailInput" value="">
                   </div>
-                  <div class="mb-3 row">
-                    <label for="departmentInput" class="col-sm-2 col-form-label">Department</label>
-                    <div class="col-sm-10">
-                        <select class="form-control contactInput"  id="departmentInput" >
-                            
-                        </select>
-                      
-                    </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="departmentInput" class="col-sm-4 col-form-label">Department</label>
+                  <div class="col-sm-8">
+                      <select class="form-control contactInput"  id="departmentInput" >
+                      </select>
                   </div>
-                  <div class="mb-3 row">
-                    <label for="jobTitleInput" class="col-sm-2 col-form-label">Job Title</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control contactInput" id="jobTitleInput" value="">
-                    </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="jobTitleInput" class="col-sm-4 col-form-label">Job Title</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control contactInput" id="jobTitleInput" value="">
                   </div>
-               
-                 
-                </form>
+                </div>
+              </form>
             </div>
-          
-            </div>
-            
-            <div class="modal-footer">
-              <button type="button" id="editContactBtn" class="btn btn-primary rounded-circle" style="width:50px;height:50px;">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+          </div>
+        
+          <div class="modal-footer">
+            <button type="button" id="editContactBtn" class="btn btn-primary rounded-circle" style="width:50px;height:50px;">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
             </button> 
-
             <button type="button" id="saveContactBtn" data-bs-toggle="modal" data-bs-target="#updateModal"  class="btn btn-primary rounded-circle" style="width:50px;height:50px;">
-            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-            </button> 
-              
-            </div>
-            
-            </div>
-            </div>
-            </div>
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+            </button>  
+          </div>
 
-            
-
-        </section>
+        </div>
+      </div>
+    </div>
+  </section>
 
 
         <section id="addContact">
@@ -145,26 +127,26 @@
   <div class="modal-body">
   
       <div class="mb-3 row">
-          <label for="firstNameInput" class="col-sm-2 col-form-label">First Name</label>
-          <div class="col-sm-10">
+          <label for="firstNameInput" class="col-sm-4 col-form-label">First Name</label>
+          <div class="col-sm-8">
             <input type="text" class="form-control contactInput" id="firstNameInputNew" value="">
           </div>
         </div>
         <div class="mb-3 row">
-          <label for="lastNameInput" class="col-sm-2 col-form-label">Last Name</label>
-          <div class="col-sm-10">
+          <label for="lastNameInput" class="col-sm-4 col-form-label">Last Name</label>
+          <div class="col-sm-8">
             <input type="text" class="form-control contactInput" id="lastNameInputNew" value="">
           </div>
         </div>
         <div class="mb-3 row">
-          <label for="emailInput" class="col-sm-2 col-form-label">Email Address</label>
-          <div class="col-sm-10">
+          <label for="emailInput" class="col-sm-4 col-form-label">Email Address</label>
+          <div class="col-sm-8">
             <input type="text" class="form-control contactInput" id="emailInputNew" value="">
           </div>
         </div>
         <div class="mb-3 row">
-          <label for="departmentInput" class="col-sm-2 col-form-label">Department</label>
-          <div class="col-sm-10">
+          <label for="departmentInput" class="col-sm-4 col-form-label">Department</label>
+          <div class="col-sm-8">
               <select class="form-control contactInput"  id="departmentInputNew" >
                   
               </select>
@@ -225,7 +207,7 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" id="editContactBtn" class="btn btn-primary rounded-circle" style="width:50px;height:50px;">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#createDepartmentModal" class="btn btn-primary rounded-circle" style="width:50px;height:50px;">
               <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                </button> 
           </div>
@@ -240,22 +222,32 @@
     <div class="modal-content">
 
       <div class="modal-header">
+        <button type="button" class="btn btn-small" data-bs-dismiss="modal" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
         <h5 class="modal-title" id="singleDepartmentName"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="btn-group">
+          <button type="button" class="btn btn-small" data-bs-toggle="dropdown" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#"  data-bs-toggle="modal" data-bs-target="#deleteModal" >Delete</a></li>
+          </ul>
+      </div>
       </div>
 
       <div class="modal-body">
 
 
         <div class="mb-3 row">
-          <label for="emailInput" class="col-sm-2 col-form-label">Department Name</label>
-          <div class="col-sm-10">
+          <label for="emailInput" class="col-sm-4 col-form-label">Department Name</label>
+          <div class="col-sm-8">
             <input type="text" class="form-control contactInput" id="singleDepartmentNameInput" value="" />
           </div>
         </div>
         <div class="mb-3 row">
-          <label for="emailInput" class="col-sm-2 col-form-label">Department Location</label>
-          <div class="col-sm-10">
+          <label for="emailInput" class="col-sm-4 col-form-label">Department Location</label>
+          <div class="col-sm-8">
             <select class="form-control contactInput" id="locationsInput" ></select>
           </div>
         </div>
@@ -264,7 +256,7 @@
       </div>
       
       <div class="modal-footer">
-      <button type="button" id="saveDepartmentBtn"  data-bs-toggle="modal" data-bs-target="#updateModal"  class="btn btn-primary rounded-circle" style="width:50px;height:50px;">
+      <button type="button" id="saveDepartmentBtn"  data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#updateModal"  class="btn btn-primary rounded-circle" style="width:50px;height:50px;">
         <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
         </button> 
       </div>
@@ -274,6 +266,130 @@
 </div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="createDepartmentModal" tabindex="-1"  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">New Department</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+
+        <div class="mb-3 row">
+          <label for="emailInput" class="col-sm-4 col-form-label">Department Name</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control contactInput" id="singleDepartmentNameInputNew" value="" />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="emailInput" class="col-sm-4 col-form-label">Department Location</label>
+          <div class="col-sm-8">
+            <select class="form-control contactInput" id="locationsInputNew" ></select>
+          </div>
+        </div>
+
+
+      </div>
+      
+      <div class="modal-footer">
+      <button type="button" id="createDepartmentBtn"  onclick="addDepartment()" data-bs-dismiss="modal" aria-label="Close"  class="btn btn-primary rounded-circle" style="width:50px;height:50px;">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        </button> 
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+        </section>
+
+        <section id="locations">
+                    <!-- Modal -->
+                    <div class="modal fade" id="locationsModal" tabindex="-1"  aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-scrollable">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="btn btn-small" data-bs-dismiss="modal" aria-label="Close">
+                          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                          </button>
+                      <h5 class="modal-title">Locations</h5>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-small" data-bs-toggle="dropdown" aria-expanded="false" >
+                          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                          <li><a class="dropdown-item" href="#"  data-bs-toggle="modal" data-bs-target="#departmentsModal" >Departments</a></li>
+                          <li><a class="dropdown-item" href="#">Locations</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="#">Help</a></li>
+                        </ul>
+                      </div>
+            
+                      </div>
+                      <div class="modal-body">
+                        
+                        
+                        <ul id="locationsList">
+            
+                        </ul>
+                      </div>
+            
+                      <div class="modal-footer">
+                        <button type="button" id="editContactBtn" class="btn btn-primary rounded-circle" style="width:50px;height:50px;">
+                          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                           </button> 
+                      </div>
+            
+                      </div>
+                      </div>
+                      </div>
+
+                       <!-- Modal -->
+<div class="modal fade" id="editLocationModal" tabindex="-1"  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="btn btn-small" data-bs-dismiss="modal" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <h5 class="modal-title" id="singleLocationName"></h5>
+        <div class="btn-group">
+          <button type="button" class="btn btn-small" data-bs-toggle="dropdown" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#" data-bs-dismiss="modal"  data-bs-toggle="modal" data-bs-target="#deleteModal" >Delete</a></li>
+          </ul>
+      </div>
+
+      </div>
+
+      <div class="modal-body">
+
+
+        <div class="mb-3 row">
+          <label for="emailInput" class="col-sm-4 col-form-label">Location Name</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control contactInput" id="singleLocationNameInput" value="" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+      <button type="button" id="saveLocationBtn"  data-bs-toggle="modal" data-bs-dismiss="modal" data-bs-target="#updateModal"  class="btn btn-primary rounded-circle" style="width:50px;height:50px;">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        </button> 
+      </div>
+
+    </div>
+  </div>
+</div>
         </section>
 
 
@@ -322,7 +438,29 @@
   </div>
   </div>
 
-        <div class="toast-container position-absolute p-3 bottom-0 start-50 translate-middle-x" style="z-index: 5">
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1"  aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteTitle"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p id="deleteMessage"></p>
+          </div>
+      
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="deleteBtn" class="btn btn-primary" data-bs-dismiss="modal" >Delete</button>
+          </div>
+      
+        </div>
+      </div>
+      </div>
+      
+
+        <div class="toast-container position-absolute bottom-0" >
           <div id="liveToast" class="toast align-items-center text-white bg-primary border-0 hide" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body" id="responseMessage">
