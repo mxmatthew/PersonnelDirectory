@@ -14,9 +14,15 @@ async function getAllContacts() {
             departmentsList = contacts['departments']
             locationsList = contacts['locations']
             console.log(contacts);
+
             $('#contactsList').html(``)
             $('#departmentsList').html(``)
             $('#locationsList').html(``)
+            $('#departmentInput').html(``)
+            $('#departmentInputNew').html(``)
+            $('#locationsInput').html(``)
+            $('#locationsInputNew').html(``)
+
             contactsList.forEach( (contact,index) => {
                 $('#contactsList').append(`
                 <li><a href="#" onClick="getContact(${contact.id})" data-bs-toggle="modal" data-bs-target="#ContactModal" ><div class="contactIcon">${contact.firstName[0]}${contact.lastName[0]}</div> ${contact.lastName}, ${contact.firstName}</a></li>
@@ -50,6 +56,21 @@ async function getAllContacts() {
     })
 }
 
+$('#contactSearchInput').on("change paste keyup", function() {
+    $('#contactsList').html(``)
+    contactsList.forEach( (contact,index) => {
+        if( contact.firstName.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() ) || 
+            contact.lastName.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() )  || 
+            contact.department.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() ))   {
+        $('#contactsList').append(`
+        <li><a href="#" onClick="getContact(${contact.id})" data-bs-toggle="modal" data-bs-target="#ContactModal" ><div class="contactIcon">${contact.firstName[0]}${contact.lastName[0]}</div> ${contact.lastName}, ${contact.firstName}</a></li>
+        `)
+    }
+})
+});
+
+
+
 async function getDepartment(departmentId) {
     let findDepartment
     let isDeletable
@@ -61,7 +82,7 @@ async function getDepartment(departmentId) {
         console.log(department);
         $('#singleDepartmentNameInput').val(department.name)
         $('#singleDepartmentName').html(`${department.name}`)
-
+        $('#deleteBtn').css('display','block')
         $('#locationsInput').append(`
         <option selected="selected" value="${department.locationID}">${department.locationName}</option>
         `)
@@ -85,16 +106,17 @@ async function getLocation(locationId) {
     let isDeletable
     await Promise.resolve(
         findLocation  = locationsList.filter(location => location.id == locationId),
-        isDeletable = departmentsList.filter(contacts => departments.locationID == locationId )
+        isDeletable = departmentsList.filter(departments => departments.locationID == locationId )
     ).then(() => {
         let location = findLocation[0];
         console.log(location);
         $('#singleLocationNameInput').val(location.name)
         $('#singleLocationName').html(`${location.name}`)
+        $('#deleteBtn').css('display','block')
         $('#locationsInput').val(location.name)
         $('#updateBtn').attr('onclick',`updateLocation(${location.id})`)
         $('#deleteBtn').attr('onclick',`deleteItem('location',${location.id})`)
-        if (isDeletable) {
+        if (isDeletable[0]) {
             console.log("Cannot be deleted")
             $('#deleteTitle').html(`Delete Location`)
             $('#deleteMessage').html(`This location cannot be deleted because it has departments attatched to it.`)
@@ -253,11 +275,30 @@ async function addDepartment() {
     
             } 
         })
-        const refreshed = await getAllContacts();
-        
-
+        const refreshed = await getAllContacts();    
 }
 
+async function addLocation() {
+    $.ajax({
+            url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {crud: 'create', requestType: 'location', locationName: $('#singleLocationNameInputNew').val()},
+            success: result => {
+               if (result['status']['code'] == 200) {
+                   $('#responseMessage').html('Department Saved')
+                $('.toast').toast('show');
+               } else {
+                   console.log(result)
+                $('#responseMessage').html('Something went wrong')
+                $('.toast').toast('show');
+               }
+              
+    
+            } 
+        })
+        const refreshed = await getAllContacts();    
+}
 
 
 async function deleteItem(itemType,itemId) {
@@ -278,7 +319,7 @@ async function deleteItem(itemType,itemId) {
         }
 }).then(getAllContacts()).then(async ()=> {
     const refreshed = await getAllContacts();
-
+    
 })
 }
 

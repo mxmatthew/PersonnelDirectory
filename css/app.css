@@ -109,3 +109,7 @@ header h1 {
     border-radius:0;
     height:90px;
 }
+
+.no-action-btn {
+    color:#CCC;
+}

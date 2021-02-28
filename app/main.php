@@ -107,6 +107,8 @@ if($read) {
     "' . $_POST['jobTitle'] . '")';
     } elseif ($requestType == 'department') {
 		$query = 'INSERT INTO department (name,locationID) VALUES("' . $_POST['departmentName'] . '","' . $_POST['locationID'] . '")';
+	} elseif ($requestType == 'location') {
+		$query = 'INSERT INTO location (name) VALUES("' . $_POST['locationName'] . '")';
 	}
 
 	$result = $conn->query($query);
