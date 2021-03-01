@@ -64,6 +64,7 @@ header h1 {
     font-size:1.1em;
     line-height:50px;
     text-decoration:none;
+    min-height:80px;
 }
 
 
@@ -79,6 +80,12 @@ header h1 {
     color:#FFF;
     margin-right:15px;
 
+}
+
+.contactDetails {
+    display:block;
+    float:left;
+    line-height:25px;
 }
 
 /* Modal Styling */
@@ -111,5 +118,15 @@ header h1 {
 }
 
 .no-action-btn {
+    color:#CCC;
+}
+
+.contactInput {
+    border:0;
+    border-bottom:1px solid #CCC;
+}
+
+.small {
+    font-size:0.7em;
     color:#CCC;
 }

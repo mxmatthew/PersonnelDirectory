@@ -13,8 +13,6 @@ async function getAllContacts() {
             contactsList = contacts['contacts']
             departmentsList = contacts['departments']
             locationsList = contacts['locations']
-            console.log(contacts);
-
             $('#contactsList').html(``)
             $('#departmentsList').html(``)
             $('#locationsList').html(``)
@@ -25,7 +23,11 @@ async function getAllContacts() {
 
             contactsList.forEach( (contact,index) => {
                 $('#contactsList').append(`
-                <li><a href="#" onClick="getContact(${contact.id})" data-bs-toggle="modal" data-bs-target="#ContactModal" ><div class="contactIcon">${contact.firstName[0]}${contact.lastName[0]}</div> ${contact.lastName}, ${contact.firstName}</a></li>
+                <li><a href="#" onClick="getContact(${contact.id})" data-bs-toggle="modal" data-bs-target="#ContactModal" >
+                <div class="contactIcon">${contact.firstName[0]}${contact.lastName[0]}</div>
+                <div class="contactDetails"> ${contact.lastName}, ${contact.firstName}<br>
+                <p class="small" >${contact.department}</p>
+                </div></a></li>
                 `)
             })
            departmentsList.forEach( (department,index) => {
@@ -61,9 +63,16 @@ $('#contactSearchInput').on("change paste keyup", function() {
     contactsList.forEach( (contact,index) => {
         if( contact.firstName.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() ) || 
             contact.lastName.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() )  || 
+            contact.jobTitle.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() )  ||
+            contact.email.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() )  ||  
+            contact.location.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() )  || 
             contact.department.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() ))   {
         $('#contactsList').append(`
-        <li><a href="#" onClick="getContact(${contact.id})" data-bs-toggle="modal" data-bs-target="#ContactModal" ><div class="contactIcon">${contact.firstName[0]}${contact.lastName[0]}</div> ${contact.lastName}, ${contact.firstName}</a></li>
+        <li><a href="#" onClick="getContact(${contact.id})" data-bs-toggle="modal" data-bs-target="#ContactModal" >
+                <div class="contactIcon">${contact.firstName[0]}${contact.lastName[0]}</div>
+                <div class="contactDetails"> ${contact.lastName}, ${contact.firstName}<br>
+                <p class="small" >${contact.department}</p>
+                </div></a></li>
         `)
     }
 })
@@ -79,7 +88,7 @@ async function getDepartment(departmentId) {
         isDeletable = contactsList.filter(contacts => contacts.departmentID == departmentId )
     ).then(() => {
         let department = findDepartment[0];
-        console.log(department);
+        
         $('#singleDepartmentNameInput').val(department.name)
         $('#singleDepartmentName').html(`${department.name}`)
         $('#deleteBtn').css('display','block')
@@ -89,7 +98,7 @@ async function getDepartment(departmentId) {
         $('#updateBtn').attr('onclick',`updateDepartment(${department.id})`)
         $('#deleteBtn').attr('onclick',`deleteItem('department',${department.id})`)
         if (isDeletable[0]) {
-            console.log("Cannot be deleted")
+           
             $('#deleteTitle').html(`Delete Department`)
             $('#deleteMessage').html(`This department cannot be deleted because it has personnel attatched to it.`)
             $('#deleteBtn').css('display','none')
@@ -109,7 +118,7 @@ async function getLocation(locationId) {
         isDeletable = departmentsList.filter(departments => departments.locationID == locationId )
     ).then(() => {
         let location = findLocation[0];
-        console.log(location);
+      
         $('#singleLocationNameInput').val(location.name)
         $('#singleLocationName').html(`${location.name}`)
         $('#deleteBtn').css('display','block')
@@ -117,7 +126,7 @@ async function getLocation(locationId) {
         $('#updateBtn').attr('onclick',`updateLocation(${location.id})`)
         $('#deleteBtn').attr('onclick',`deleteItem('location',${location.id})`)
         if (isDeletable[0]) {
-            console.log("Cannot be deleted")
+    
             $('#deleteTitle').html(`Delete Location`)
             $('#deleteMessage').html(`This location cannot be deleted because it has departments attatched to it.`)
             $('#deleteBtn').css('display','none')
@@ -138,7 +147,7 @@ async function getContact(contactId) {
         findContact  = contactsList.filter(contact => contact.id == contactId)
     ).then(() => {
         let contact = findContact[0];
-        console.log(contact);
+     
         $('#contactSingleName').html(`${contact.firstName} ${contact.lastName}`)
         $('#firstNameInput').val(contact.firstName)
         $('#lastNameInput').val(contact.lastName)
@@ -150,8 +159,13 @@ async function getContact(contactId) {
         <option selected="selected" value="${contact.departmentID}">${contact.department}</option>
         `)
         $('#contactDetails').html(`
+        <p class="small" >Department</p>
         <p class="contactInfoItem">${contact.department}</p>
+        <p class="small" >Location</p>
         <p class="contactInfoItem">${contact.location}</p>
+        <p class="small" >Job Title</p>
+        <p class="contactInfoItem">${contact.jobTitle}</p>
+        <p class="small" >Email Address</p>
         <p class="contactInfoItem">${contact.email}</p>
         `)
     })
@@ -161,7 +175,7 @@ async function getContact(contactId) {
 }
 
 async function updateContact(contactId) {
-$.ajax({
+await $.ajax({
         url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
         type: 'POST',
         dataType: 'json',
@@ -172,16 +186,14 @@ $.ajax({
                $('#responseMessage').html('Contact Saved')
             $('.toast').toast('show');
            } else {
-               console.log(result)
             $('#responseMessage').html('Something went wrong')
             $('.toast').toast('show');
            }
           
 
         } 
-    })
-    const refreshed = await getAllContacts();
-    getContact(contactId)
+    }).then(await getAllContacts()).then(getContact(contactId));
+    
 
 }
 
@@ -196,7 +208,6 @@ async function updateDepartment(departmentId) {
                    $('#responseMessage').html('Department Saved')
                 $('.toast').toast('show');
                } else {
-                   console.log(result)
                 $('#responseMessage').html('Something went wrong')
                 $('.toast').toast('show');
                }
@@ -219,7 +230,6 @@ async function updateLocation(locationId) {
                    $('#responseMessage').html('Location Saved')
                 $('.toast').toast('show');
                } else {
-                   console.log(result)
                 $('#responseMessage').html('Something went wrong')
                 $('.toast').toast('show');
                }
@@ -244,7 +254,6 @@ async function addContact() {
                    $('#responseMessage').html('Contact Saved')
                 $('.toast').toast('show');
                } else {
-                   console.log(result)
                 $('#responseMessage').html('Something went wrong')
                 $('.toast').toast('show');
                }
@@ -267,7 +276,6 @@ async function addDepartment() {
                    $('#responseMessage').html('Department Saved')
                 $('.toast').toast('show');
                } else {
-                   console.log(result)
                 $('#responseMessage').html('Something went wrong')
                 $('.toast').toast('show');
                }
@@ -289,7 +297,6 @@ async function addLocation() {
                    $('#responseMessage').html('Department Saved')
                 $('.toast').toast('show');
                } else {
-                   console.log(result)
                 $('#responseMessage').html('Something went wrong')
                 $('.toast').toast('show');
                }
@@ -312,7 +319,6 @@ async function deleteItem(itemType,itemId) {
                 $('#responseMessage').html('Succesfully Deleted')
              $('.toast').toast('show');
             } else {
-                console.log(result)
              $('#responseMessage').html('Something went wrong')
              $('.toast').toast('show');
             }
@@ -323,6 +329,23 @@ async function deleteItem(itemType,itemId) {
 })
 }
 
+$(document).ready( () => {
 
+    $('#editContactBtn').click(() => {
+        $('#contactDetails').toggle()
+        $('#editContactForm').toggle()
+        $('#editContactBtn').toggle()
+        $('#saveContactBtn').toggle()
+    })
+
+    $('#saveContactBtn').click(() => {
+        $('#contactDetails').toggle()
+        $('#editContactForm').toggle()
+        $('#editContactBtn').toggle()
+        $('#saveContactBtn').toggle()
+    })
+
+ })
+ 
 
 getAllContacts();
