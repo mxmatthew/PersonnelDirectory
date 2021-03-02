@@ -5,7 +5,7 @@ let locationsList
 
 async function getAllContacts() {
  await $.ajax({
-        url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+        url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
         type: 'POST',
         dataType: 'json',
         data: {crud: 'read', requestType: 'all_contacts' },
@@ -37,6 +37,9 @@ async function getAllContacts() {
             $('#departmentInputNew').append(`
             <option value="${department.id}">${department.name}</option>
             `)
+            $('#contactSearchDepartments').append(`
+            <option value="${department.name}">${department.name}</option>
+            `)
             $('#departmentsList').append(`
             <li><a href="#" onClick="getDepartment(${department.id})" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" >${department.name}</a></li>
                
@@ -49,6 +52,9 @@ async function getAllContacts() {
                 $('#locationsInputNew').append(`
                 <option value="${location.id}">${location.name}</option>
                 `)
+                $('#contactSearchLocations').append(`
+                <option value="${location.name}">${location.name}</option>
+                `)
                 $('#locationsList').append(`
                 <li><a href="#" onClick="getLocation(${location.id})" data-bs-toggle="modal" data-bs-target="#editLocationModal" >${location.name}</a></li>
                    
@@ -58,15 +64,13 @@ async function getAllContacts() {
     })
 }
 
-$('#contactSearchInput').on("change paste keyup", function() {
+$("#contactSearchInput,#contactSearchDepartments,#contactSearchLocations").on("change paste keyup", function() {
     $('#contactsList').html(``)
     contactsList.forEach( (contact,index) => {
-        if( contact.firstName.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() ) || 
-            contact.lastName.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() )  || 
-            contact.jobTitle.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() )  ||
-            contact.email.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() )  ||  
-            contact.location.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() )  || 
-            contact.department.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() ))   {
+        let contactFullName = contact.firstName + ' ' + contact.lastName
+        if( contactFullName.toLowerCase().includes( $('#contactSearchInput').val().toLowerCase() ) && 
+            contact.location.includes( $('#contactSearchLocations').val() )  && 
+            contact.department.includes( $('#contactSearchDepartments').val() ))   {
         $('#contactsList').append(`
         <li><a href="#" onClick="getContact(${contact.id})" data-bs-toggle="modal" data-bs-target="#ContactModal" >
                 <div class="contactIcon">${contact.firstName[0]}${contact.lastName[0]}</div>
@@ -82,13 +86,13 @@ $('#contactSearchInput').on("change paste keyup", function() {
 
 async function getDepartment(departmentId) {
     let findDepartment
-    let isDeletable
+    let findContacts
     await Promise.resolve(
         findDepartment  = departmentsList.filter(department => department.id == departmentId),
-        isDeletable = contactsList.filter(contacts => contacts.departmentID == departmentId )
+        findContacts = contactsList.filter(contacts => contacts.departmentID == departmentId )
     ).then(() => {
         let department = findDepartment[0];
-        
+        $('#departmentContacts').html(``)
         $('#singleDepartmentNameInput').val(department.name)
         $('#singleDepartmentName').html(`${department.name}`)
         $('#deleteBtn').css('display','block')
@@ -97,11 +101,19 @@ async function getDepartment(departmentId) {
         `)
         $('#updateBtn').attr('onclick',`updateDepartment(${department.id})`)
         $('#deleteBtn').attr('onclick',`deleteItem('department',${department.id})`)
-        if (isDeletable[0]) {
-           
+        if (findContacts[0]) {
             $('#deleteTitle').html(`Delete Department`)
             $('#deleteMessage').html(`This department cannot be deleted because it has personnel attatched to it.`)
             $('#deleteBtn').css('display','none')
+            findContacts.forEach( (contact,index) => {
+            $('#departmentContacts').append(`
+            <li><a href="#"  >
+                    <div class="contactIcon">${contact.firstName[0]}${contact.lastName[0]}</div>
+                    <div class="contactDetails"> ${contact.lastName}, ${contact.firstName}<br>
+                    <p class="small" >${contact.department}</p>
+                    </div></a></li>
+            `)
+            })
         } else {
             $('#deleteTitle').html(`Are You Sure?`)
             $('#deleteMessage').html(`This will permenantly delete this department from the company directory.`)
@@ -112,10 +124,10 @@ async function getDepartment(departmentId) {
 
 async function getLocation(locationId) {
     let findLocation
-    let isDeletable
+    let findDepartments
     await Promise.resolve(
         findLocation  = locationsList.filter(location => location.id == locationId),
-        isDeletable = departmentsList.filter(departments => departments.locationID == locationId )
+        findDepartments = departmentsList.filter(departments => departments.locationID == locationId )
     ).then(() => {
         let location = findLocation[0];
       
@@ -125,11 +137,15 @@ async function getLocation(locationId) {
         $('#locationsInput').val(location.name)
         $('#updateBtn').attr('onclick',`updateLocation(${location.id})`)
         $('#deleteBtn').attr('onclick',`deleteItem('location',${location.id})`)
-        if (isDeletable[0]) {
-    
+        if (findDepartments[0]) {
             $('#deleteTitle').html(`Delete Location`)
             $('#deleteMessage').html(`This location cannot be deleted because it has departments attatched to it.`)
             $('#deleteBtn').css('display','none')
+            findDepartments.forEach( (department,index) => {
+                $('#locationDepartments').append(`
+                <li><a href="#" onClick="getDepartment(${department.id})" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" >${department.name}</a></li>
+                `)
+                })
         } else {
             $('#deleteTitle').html(`Are You Sure?`)
             $('#deleteMessage').html(`This will permenantly delete this location from the company directory.`)
@@ -176,7 +192,7 @@ async function getContact(contactId) {
 
 async function updateContact(contactId) {
 await $.ajax({
-        url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+        url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
         type: 'POST',
         dataType: 'json',
         data: {crud: 'update', requestType: 'contact', id: contactId, firstName: $('#firstNameInput').val(), lastName: $('#lastNameInput').val(), 
@@ -199,7 +215,7 @@ await $.ajax({
 
 async function updateDepartment(departmentId) {
     $.ajax({
-            url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+            url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
             type: 'POST',
             dataType: 'json',
             data: {crud: 'update', requestType: 'department', id: departmentId, departmentName: $('#singleDepartmentNameInput').val(), locationID: $('#locationsInput').val() },
@@ -221,7 +237,7 @@ async function updateDepartment(departmentId) {
 
 async function updateLocation(locationId) {
     $.ajax({
-            url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+            url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
             type: 'POST',
             dataType: 'json',
             data: {crud: 'update', requestType: 'location', id: locationId, locationName: $('#singleLocationNameInput').val() },
@@ -244,7 +260,7 @@ async function updateLocation(locationId) {
 
 async function addContact() {
     $.ajax({
-            url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+            url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
             type: 'POST',
             dataType: 'json',
             data: {crud: 'create', requestType: 'contact', firstName: $('#firstNameInputNew').val(), lastName: $('#lastNameInputNew').val(), 
@@ -267,7 +283,7 @@ async function addContact() {
 
 async function addDepartment() {
     $.ajax({
-            url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+            url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
             type: 'POST',
             dataType: 'json',
             data: {crud: 'create', requestType: 'department', departmentName: $('#singleDepartmentNameInputNew').val(), locationID: $('#locationsInputNew').val()},
@@ -288,7 +304,7 @@ async function addDepartment() {
 
 async function addLocation() {
     $.ajax({
-            url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+            url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
             type: 'POST',
             dataType: 'json',
             data: {crud: 'create', requestType: 'location', locationName: $('#singleLocationNameInputNew').val()},
@@ -310,7 +326,7 @@ async function addLocation() {
 
 async function deleteItem(itemType,itemId) {
  await $.ajax({
-        url: 'http://dev1.mattt.uk/projects/companydirectory/app/main.php',
+        url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
         type: 'POST',
         dataType: 'json',
         data: {crud: 'delete', requestType: itemType, id: itemId },
@@ -323,10 +339,8 @@ async function deleteItem(itemType,itemId) {
              $('.toast').toast('show');
             }
         }
-}).then(getAllContacts()).then(async ()=> {
-    const refreshed = await getAllContacts();
-    
-})
+}).then(await getAllContacts()).then();
+
 }
 
 $(document).ready( () => {
@@ -343,6 +357,11 @@ $(document).ready( () => {
         $('#editContactForm').toggle()
         $('#editContactBtn').toggle()
         $('#saveContactBtn').toggle()
+    })
+
+    $('#toggleSearchFilter').click(() => {
+        $('#filterSearch').toggle()
+        $('.sspacer').toggle()
     })
 
  })

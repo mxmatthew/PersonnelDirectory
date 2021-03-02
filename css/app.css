@@ -7,7 +7,7 @@ h1 {
     font-weight:700;
 }
 
-#editContactForm, #saveContactBtn, #singleDepartment {
+#editContactForm, #saveContactBtn, #singleDepartment,#filterSearch {
     display:none;
 }
 
@@ -42,21 +42,33 @@ header h1 {
 }
 
 .hspacer {
+    height:120px;
+}
+.sspacer {
+    display:none;
     height:100px;
 }
 
+.searchInput {
+    margin-bottom:15px;
+}
 /* Contacts List */
 
-#contactsList,#departmentsList,#locationsList  {
+#contactsList,#departmentsList,#locationsList,#departmentContacts, #locationDepartments  {
     list-style:none;
     margin:0;padding:0;
 }
 
-#contactsList li,#departmentsList li, #locationsList li {
+#departmentContacts,#locationDepartments  {
+    background:#EFEFEF;
+    border-radius:5px;
+}
+
+#contactsList li,#departmentsList li, #locationsList li, #departmentContacts li,#locationDepartments li {
     padding-left:15px;padding-right:15px;
 }
 
-#contactsList li a,#departmentsList li a, #locationsList li a {
+#contactsList li a,#departmentsList li a, #locationsList li a, #departmentContacts li a, #locationDepartments li a {
     display:block;
     padding-top:15px;padding-bottom:15px;
     border-bottom:1px solid #EFEFEF;
@@ -124,6 +136,7 @@ header h1 {
 .contactInput {
     border:0;
     border-bottom:1px solid #CCC;
+    border-radius:0px;
 }
 
 .small {
