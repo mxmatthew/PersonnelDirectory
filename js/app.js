@@ -93,7 +93,6 @@ async function getDepartment(departmentId) {
     ).then(() => {
         let department = findDepartment[0];
         $('#departmentContacts').html(``)
-        $('#locationsInput').html(``)
         $('#singleDepartmentNameInput').val(department.name)
         $('#singleDepartmentName').html(`${department.name}`)
         $('#deleteBtn').css('display','block')
@@ -164,7 +163,7 @@ async function getContact(contactId) {
         findContact  = contactsList.filter(contact => contact.id == contactId)
     ).then(() => {
         let contact = findContact[0];
-        $('#departmentInput').html(``)
+        
         $('#contactSingleName').html(`${contact.firstName} ${contact.lastName}`)
         $('#firstNameInput').val(contact.firstName)
         $('#lastNameInput').val(contact.lastName)
