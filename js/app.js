@@ -259,6 +259,10 @@ async function updateLocation(locationId) {
 
 
 async function addContact() {
+    if ( $('#firstNameInputNew').val() == '' ||  $('#lastNameInputNew').val() == ''  ) {
+        $('#responseMessage').html('Please enter a first name and last name when creating a new contact.')
+        $('.toast').toast('show');
+    } else {
     $.ajax({
             url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
             type: 'POST',
@@ -280,8 +284,13 @@ async function addContact() {
         const refreshed = await getAllContacts();
 
 }
+}
 
 async function addDepartment() {
+    if ( $('#singleDepartmentNameInputNew').val() == ''  ) {
+        $('#responseMessage').html('Please enter a department name when creating a new department.')
+        $('.toast').toast('show');
+    } else {
     $.ajax({
             url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
             type: 'POST',
@@ -301,8 +310,13 @@ async function addDepartment() {
         })
         const refreshed = await getAllContacts();    
 }
+}
 
 async function addLocation() {
+    if ( $('#singleLocationNameInputNew').val() == ''  ) {
+        $('#responseMessage').html('Please enter a location name when creating a new location.')
+        $('.toast').toast('show');
+    } else {
     $.ajax({
             url: 'https://dev1.mattt.uk/projects/companydirectory/app/main.php',
             type: 'POST',
@@ -310,7 +324,7 @@ async function addLocation() {
             data: {crud: 'create', requestType: 'location', locationName: $('#singleLocationNameInputNew').val()},
             success: result => {
                if (result['status']['code'] == 200) {
-                   $('#responseMessage').html('Department Saved')
+                   $('#responseMessage').html('Location Saved')
                 $('.toast').toast('show');
                } else {
                 $('#responseMessage').html('Something went wrong')
@@ -322,7 +336,7 @@ async function addLocation() {
         })
         const refreshed = await getAllContacts();    
 }
-
+}
 
 async function deleteItem(itemType,itemId) {
  await $.ajax({
