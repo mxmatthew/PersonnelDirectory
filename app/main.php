@@ -180,26 +180,39 @@ if($read) {
 } elseif ($delete) {
 
     if ($requestType == 'contact') {
-    $query = 'DELETE FROM personnel WHERE id = ' . $_POST['id'];
+    	$query = 'DELETE FROM personnel WHERE id = ' . $_POST['id'];
+		$result = $conn->query($query);
     } elseif ($requestType == 'department') {
-	$query = 'DELETE FROM department WHERE id = ' . $_POST['id'];
+		$checkQuery = 'SELECT id FROM personnel WHERE departmentID = ' . $_POST['id'] ;
+		$checkResult = $conn->query($checkQuery);
+		if (mysqli_num_rows($checkResult) < 1) {
+			$query = 'DELETE FROM department WHERE id = ' . $_POST['id'];
+			$result = $conn->query($query);
+		} else {
+			$result = null;
+			$output['status']['description'] = "Department cannot be deleted because it has personnel attatched to it.";	
+		}
 	} elseif ($requestType == 'location') {
-	$query = 'DELETE FROM location WHERE id = ' . $_POST['id'];
+		$checkQuery = 'SELECT id FROM department WHERE locationID = ' . $_POST['id'] ;
+		$checkResult = $conn->query($checkQuery);
+		if (mysqli_num_rows($checkResult) < 1) {
+			$query = 'DELETE FROM location WHERE id = ' . $_POST['id'];
+			$result = $conn->query($query);
+		} else {
+			$result = null;
+			$output['status']['description'] = "Location cannot be deleted because it has departments attatched to it.";	
+		}	
 	} 
 
-	$result = $conn->query($query);
+	
 	
 	if (!$result) {
 
 		$output['status']['code'] = "400";
 		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";	
 		$output['data'] = [];
-
 		mysqli_close($conn);
-
 		echo json_encode($output); 
-
 		exit;
 
 	}

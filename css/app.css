@@ -19,12 +19,18 @@ header {
     background: rgb(0,7,200);
     background: linear-gradient(340deg, rgba(0,7,200,1) 0%, rgba(0,255,205,1) 100%);
     width:100%;
+    height:120px;
 }
 
 header h1 {
     text-transform:uppercase;
     font-size:1.3em;
     color:#FFF;
+}
+
+h2 {
+    text-transform:uppercase;
+    font-size:1.3em;
 }
 
 .title {
@@ -54,7 +60,7 @@ header h1 {
 }
 /* Contacts List */
 
-#contactsList,#departmentsList,#locationsList,#departmentContacts, #locationDepartments  {
+#contactsList,#departmentsList,#departmentsListHome,#locationsList,#departmentContacts, #locationDepartments  {
     list-style:none;
     margin:0;padding:0;
 }
@@ -64,11 +70,11 @@ header h1 {
     border-radius:5px;
 }
 
-#contactsList li,#departmentsList li, #locationsList li, #departmentContacts li,#locationDepartments li {
+#contactsList li,#departmentsList li, #locationsList li, #departmentContacts li,#locationDepartments li,#departmentsListHome li {
     padding-left:15px;padding-right:15px;
 }
 
-#contactsList li a,#departmentsList li a, #locationsList li a, #departmentContacts li a, #locationDepartments li a {
+#contactsList li a,#departmentsList li a, #locationsList li a, #departmentContacts li a, #locationDepartments li a, #departmentsListHome li a {
     display:block;
     padding-top:15px;padding-bottom:15px;
     border-bottom:1px solid #EFEFEF;
@@ -79,6 +85,9 @@ header h1 {
     min-height:80px;
 }
 
+#departmentsListHome li a {
+    border-bottom:1px solid #FFF;
+}
 
 .contactIcon {
     display:block;
@@ -143,3 +152,56 @@ header h1 {
     font-size:0.7em;
     color:#CCC;
 }
+
+.maincol {
+    margin-top:120px;
+    height:calc(100vh - 120px);
+    overflow-x:hidden;
+    overflow-y:scroll;
+}
+
+.sidecol {
+    margin-top:120px;
+    height:calc(100vh - 120px);
+    background:#EFEFEF;
+    overflow-x:hidden;
+    overflow-y:scroll;
+}
+
+.addFilterPadding{
+    margin-top:220px;
+    height:calc(100vh - 220px);
+}
+.addFilterHeader {
+    height:220px;
+}
+
+@media screen and (max-width: 900px) {
+
+.sidecol {
+    display:none;
+}
+.maincol {
+    width:100%;
+}
+
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #CCC;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }

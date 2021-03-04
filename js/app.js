@@ -16,6 +16,7 @@ async function getAllContacts() {
             $('#contactsList').html(``)
             $('#departmentsList').html(``)
             $('#locationsList').html(``)
+            $('#departmentsListHome').html(``)
             $('#departmentInput').html(``)
             $('#departmentInputNew').html(``)
             $('#locationsInput').html(``)
@@ -42,7 +43,9 @@ async function getAllContacts() {
             `)
             $('#departmentsList').append(`
             <li><a href="#" onClick="getDepartment(${department.id})" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" >${department.name}</a></li>
-               
+            `)
+            $('#departmentsListHome').append(`
+            <li><a href="#" onClick="getDepartment(${department.id})" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" >${department.name}</a></li>
             `)
             })
             locationsList.forEach( (location,index) => {
@@ -101,10 +104,9 @@ async function getDepartment(departmentId) {
         `)
         $('#updateBtn').attr('onclick',`updateDepartment(${department.id})`)
         $('#deleteBtn').attr('onclick',`deleteItem('department',${department.id})`)
+        $('#deleteTitle').html(`Are You Sure?`)
+        $('#deleteMessage').html(`This will permenantly delete this department from the company directory.`)
         if (findContacts[0]) {
-            $('#deleteTitle').html(`Delete Department`)
-            $('#deleteMessage').html(`This department cannot be deleted because it has personnel attatched to it.`)
-            $('#deleteBtn').css('display','none')
             findContacts.forEach( (contact,index) => {
             $('#departmentContacts').append(`
             <li><a href="#"  >
@@ -114,10 +116,7 @@ async function getDepartment(departmentId) {
                     </div></a></li>
             `)
             })
-        } else {
-            $('#deleteTitle').html(`Are You Sure?`)
-            $('#deleteMessage').html(`This will permenantly delete this department from the company directory.`)
-        }
+        } 
     })
 
 }
@@ -137,18 +136,14 @@ async function getLocation(locationId) {
         $('#locationsInput').val(location.name)
         $('#updateBtn').attr('onclick',`updateLocation(${location.id})`)
         $('#deleteBtn').attr('onclick',`deleteItem('location',${location.id})`)
+        $('#deleteTitle').html(`Are You Sure?`)
+        $('#deleteMessage').html(`This will permenantly delete this location from the company directory.`)
         if (findDepartments[0]) {
-            $('#deleteTitle').html(`Delete Location`)
-            $('#deleteMessage').html(`This location cannot be deleted because it has departments attatched to it.`)
-            $('#deleteBtn').css('display','none')
             findDepartments.forEach( (department,index) => {
                 $('#locationDepartments').append(`
                 <li><a href="#" onClick="getDepartment(${department.id})" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" >${department.name}</a></li>
                 `)
                 })
-        } else {
-            $('#deleteTitle').html(`Are You Sure?`)
-            $('#deleteMessage').html(`This will permenantly delete this location from the company directory.`)
         }
     })
 
@@ -349,7 +344,7 @@ async function deleteItem(itemType,itemId) {
                 $('#responseMessage').html('Succesfully Deleted')
              $('.toast').toast('show');
             } else {
-             $('#responseMessage').html('Something went wrong')
+             $('#responseMessage').html(result['status']['description'])
              $('.toast').toast('show');
             }
         }
@@ -375,7 +370,9 @@ $(document).ready( () => {
 
     $('#toggleSearchFilter').click(() => {
         $('#filterSearch').toggle()
-        $('.sspacer').toggle()
+        $('header').toggleClass('addFilterHeader')
+       $('.maincol').toggleClass('addFilterPadding')
+       $('.sidecol').toggleClass('addFilterPadding')
     })
 
  })
