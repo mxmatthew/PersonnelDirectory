@@ -361,6 +361,13 @@ $(document).ready( () => {
         $('#saveContactBtn').toggle()
     })
 
+    $('#closeContactModal').click(() => {
+        $('#contactDetails').show()
+        $('#editContactForm').hide()
+        $('#editContactBtn').show()
+        $('#saveContactBtn').hide()
+    })
+
     $('#saveContactBtn').click(() => {
         $('#contactDetails').toggle()
         $('#editContactForm').toggle()
