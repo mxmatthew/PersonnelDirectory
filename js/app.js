@@ -21,8 +21,12 @@ async function getAllContacts() {
             $('#departmentInputNew').html(``)
             $('#locationsInput').html(``)
             $('#locationsInputNew').html(``)
-            $('#contactSearchLocations').html(``)
-            $('#contactSearchDepartments').html(``)
+            $('#contactSearchLocations').html(`
+            <option value="" selected="selected">Any Location</option>
+            `)
+            $('#contactSearchDepartments').html(`
+            <option value="" selected="selected">Any Department</option>
+            `)
 
             contactsList.forEach( (contact,index) => {
                 $('#contactsList').append(`
