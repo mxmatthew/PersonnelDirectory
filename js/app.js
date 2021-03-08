@@ -21,6 +21,8 @@ async function getAllContacts() {
             $('#departmentInputNew').html(``)
             $('#locationsInput').html(``)
             $('#locationsInputNew').html(``)
+            $('#contactSearchLocations').html(``)
+            $('#contactSearchDepartments').html(``)
 
             contactsList.forEach( (contact,index) => {
                 $('#contactsList').append(`
